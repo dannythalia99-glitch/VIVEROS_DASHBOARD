@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DESARROLLO GENÉTICO Y VIVEROS | Portal de Dashboards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #1a2c3e;
+            line-height: 1.5;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+        }
+
+        .main-header {
+            background: linear-gradient(135deg, #0b3b2f 0%, #1b5e3f 100%);
+            border-radius: 2rem;
+            padding: 1.8rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 12px 25px -10px rgba(0, 32, 16, 0.25);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-titles h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-titles p {
+            font-size: 0.95rem;
+            opacity: 0.85;
+            margin-top: 0.4rem;
+        }
+
+        .badge-gerencia {
+            background: rgba(255,255,240,0.2);
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-section {
+            background: white;
+            border-radius: 1.8rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+            padding: 1.4rem 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2edf2;
+        }
+
+        .upload-header h3 {
+            font-weight: 600;
+            color: #1e4a3b;
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-upload {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4b6b5f;
+            margin-bottom: 0.3rem;
+        }
+
+        select, input, .btn {
+            font-family: 'Inter', sans-serif;
+            border-radius: 60px;
+            border: 1px solid #cfdfe8;
+            padding: 0.65rem 1.2rem;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .btn {
+            background: #1f5e48;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: auto;
+            padding: 0.65rem 1.8rem;
+        }
+
+        .btn:hover {
+            background: #0f4636;
+        }
+
+        .tabs-container {
+            background: white;
+            border-radius: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 0.6rem 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1.3rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            color: #2c5a4c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            background: #1f5e48;
+            color: white;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+
+        .card-header {
+            padding: 1rem 1.3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #edf2f5;
+        }
+
+        .cat-badge {
+            background: #eef3f0;
+            padding: 0.25rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #2c6e4f;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 280px;
+            border: none;
+        }
+
+        .card-actions {
+            padding: 0.8rem 1.3rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #b91c1c;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.4rem 0.8rem;
+            border-radius: 40px;
+        }
+
+        .delete-btn:hover {
+            background: #fee2e2;
+        }
+
+        .empty-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            background: #fef9e6;
+            padding: 3rem;
+            border-radius: 2rem;
+            color: #7b6e3b;
+        }
+
+        @media (max-width: 720px) {
+            .app-container {
+                padding: 1rem;
+            }
+            .form-upload {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="main-header">
+        <div class="header-titles">
+            <h1><i class="fas fa-seedling"></i> DESARROLLO GENÉTICO Y VIVEROS</h1>
+            <p><i class="fas fa-chart-line"></i> Plataforma central de reportes Power BI</p>
+        </div>
+        <div class="badge-gerencia">
+            <i class="fas fa-chart-simple"></i> Acceso Gerencia
+        </div>
+    </div>
+
+    <div class="upload-section">
+        <div class="upload-header">
+            <h3><i class="fas fa-cloud-upload-alt"></i> Publicar nuevo informe Power BI</h3>
+        </div>
+        <div class="form-upload">
+            <div class="form-group">
+                <label>Categoría</label>
+                <select id="categorySelect">
+                    <option value="items">📦 Items / Producción</option>
+                    <option value="mano_obra">👥 Mano de Obra</option>
+                    <option value="sanidad">🛡️ Sanidad</option>
+                    <option value="fertilizaciones">🌱 Fertilizaciones</option>
+                    <option value="otros">📊 Otros</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Nombre del Dashboard</label>
+                <input type="text" id="dashboardName" placeholder="Ej: Control semanal mano de obra">
+            </div>
+            <div class="form-group">
+                <label>URL del informe (Power BI)</label>
+                <input type="text" id="iframeUrl" placeholder="https://app.powerbi.com/view?r=...">
+            </div>
+            <button class="btn" id="publishBtn"><i class="fas fa-plus-circle"></i> Publicar</button>
+        </div>
+    </div>
+
+    <div class="tabs-container">
+        <button class="tab-btn active" data-category="all">Todos</button>
+        <button class="tab-btn" data-category="items">Items</button>
+        <button class="tab-btn" data-category="mano_obra">Mano de Obra</button>
+        <button class="tab-btn" data-category="sanidad">Sanidad</button>
+        <button class="tab-btn" data-category="fertilizaciones">Fertilizaciones</button>
+        <button class="tab-btn" data-category="otros">Otros</button>
+    </div>
+
+    <div id="dashboardGrid" class="dashboard-grid"></div>
+</div>
+
+<script>
+    const STORAGE_KEY = "genetica_viveros_dashboards";
+    let dashboards = [];
+
+    function loadDashboards() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if(stored) {
+            dashboards = JSON.parse(stored);
+        }
+        if(!dashboards.length) {
+            dashboards = [
+                { id: "1", name: "Inventario de plantas", category: "items", embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiZDU4NzA5MzQtYjE1ZS00OTM4LThmNzAtYmI3YzA5MzllZDQ4IiwidCI6IjI0YzNhYzBiLWI5YzMtNDI5Ni1hZmI4LTljMTkzYzdjMDU5YiIsImMiOjh9", type: "url" },
+                { id: "2", name: "Eficiencia Mano de Obra", category: "mano_obra", embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiYWQyZTU4YmYtMWZkMi00YjdlLWI5M2MtMmE3N2VlODc3YzExIiwidCI6IjI0YzNhYzBiLWI5YzMtNDI5Ni1hZmI4LTljMTkzYzdjMDU5YiIsImMiOjh9", type: "url" }
+            ];
+            saveDashboards();
+        }
+        renderDashboardsByCategory("all");
+    }
+
+    function saveDashboards() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(dashboards));
+    }
+
+    function generateId() {
+        return Date.now() + '-' + Math.random().toString(36).substr(2, 6);
+    }
+
+    function publishDashboard() {
+        const category = document.getElementById("categorySelect").value;
+        let name = document.getElementById("dashboardName").value.trim();
+        const iframeUrl = document.getElementById("iframeUrl").value.trim();
+
+        if (!name) {
+            name = `Informe ${new Date().toLocaleString()}`;
+        }
+
+        if (!iframeUrl) {
+            alert("Por favor ingresa una URL de Power BI");
+            return;
+        }
+
+        const newDashboard = {
+            id: generateId(),
+            name: name,
+            category: category,
+            embedUrl: iframeUrl,
+            type: "url"
+        };
+
+        dashboards.push(newDashboard);
+        saveDashboards();
+        
+        document.getElementById("dashboardName").value = "";
+        document.getElementById("iframeUrl").value = "";
+        
+        const activeTab = document.querySelector(".tab-btn.active")?.getAttribute("data-category") || "all";
+        renderDashboardsByCategory(activeTab);
+    }
+
+    function deleteDashboard(id) {
+        if(confirm("¿Eliminar este informe?")) {
+            dashboards = dashboards.filter(d => d.id !== id);
+            saveDashboards();
+            const activeTab = document.querySelector(".tab-btn.active")?.getAttribute("data-category") || "all";
+            renderDashboardsByCategory(activeTab);
+        }
+    }
+
+    function renderDashboardsByCategory(categoryFilter) {
+        const grid = document.getElementById("dashboardGrid");
+        let filtered = categoryFilter === "all" ? [...dashboards] : dashboards.filter(d => d.category === categoryFilter);
+
+        if(filtered.length === 0) {
+            grid.innerHTML = `<div class="empty-message">
+                                <p>No hay dashboards publicados en esta categoría.</p>
+                              </div>`;
+            return;
+        }
+
+        grid.innerHTML = "";
+        filtered.forEach(dash => {
+            const card = document.createElement("div");
+            card.className = "dashboard-card";
+            
+            let categoryLabel = "";
+            switch(dash.category) {
+                case "items": categoryLabel = "📦 Items / Producción"; break;
+                case "mano_obra": categoryLabel = "👥 Mano de Obra"; break;
+                case "sanidad": categoryLabel = "🛡️ Sanidad"; break;
+                case "fertilizaciones": categoryLabel = "🌱 Fertilizaciones"; break;
+                case "otros": categoryLabel = "📈 Otros"; break;
+                default: categoryLabel = dash.category;
+            }
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <span class="cat-badge">${categoryLabel}</span>
+                    <span class="card-title">${dash.name}</span>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="${dash.embedUrl}" title="${dash.name}" allowfullscreen></iframe>
+                </div>
+                <div class="card-actions">
+                    <button class="delete-btn" data-id="${dash.id}"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                </div>
+            `;
+            
+            grid.appendChild(card);
+            
+            const delBtn = card.querySelector(".delete-btn");
+            delBtn.addEventListener("click", () => deleteDashboard(dash.id));
+        });
+    }
+
+    function setupTabs() {
+        const tabs = document.querySelectorAll(".tab-btn");
+        tabs.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const category = btn.getAttribute("data-category");
+                tabs.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                renderDashboardsByCategory(category);
+            });
+        });
+    }
+
+    document.getElementById("publishBtn").addEventListener("click", publishDashboard);
+    loadDashboards();
+    setupTabs();
+</script>
+</body>
+</html>
