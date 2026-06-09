@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DESARROLLO GENÉTICO Y VIVEROS | Portal de Dashboards</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>DESARROLLO GENÉTICO Y VIVEROS | Dashboard Power BI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -15,283 +15,392 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
-            color: #1a2c3e;
-            line-height: 1.5;
+            background: #f0f2f5;
+            overflow-x: hidden;
         }
 
-        .app-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1.5rem 2rem;
-        }
-
-        .main-header {
-            background: linear-gradient(135deg, #0b3b2f 0%, #1b5e3f 100%);
-            border-radius: 2rem;
-            padding: 1.8rem 2rem;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 12px 25px -10px rgba(0, 32, 16, 0.25);
-            color: white;
+        /* LAYOUT PRINCIPAL */
+        .app-wrapper {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+            min-height: 100vh;
         }
 
-        .header-titles h1 {
-            font-size: 1.9rem;
+        /* ========== MENÚ LATERAL ========== */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #0a2e25 0%, #0b3b2f 100%);
+            color: white;
+            flex-shrink: 0;
+            transition: all 0.3s;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 28px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.4rem;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
-        .header-titles p {
-            font-size: 0.95rem;
-            opacity: 0.85;
-            margin-top: 0.4rem;
+        .sidebar-header h2 i {
+            font-size: 1.8rem;
+            color: #7ed957;
         }
 
-        .badge-gerencia {
-            background: rgba(255,255,240,0.2);
-            padding: 0.6rem 1.2rem;
-            border-radius: 60px;
+        .sidebar-header p {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* Buscador */
+        .search-box {
+            padding: 0 20px 20px 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(255,255,255,0.12);
+            color: white;
             font-size: 0.85rem;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .search-box input:focus {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Navegación del menú */
+        .nav-menu {
+            flex: 1;
+            padding: 0 12px;
+        }
+
+        .nav-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 16px 16px 8px 16px;
+            color: rgba(255,255,255,0.5);
+            font-weight: 600;
+        }
+
+        .nav-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .upload-section {
-            background: white;
-            border-radius: 1.8rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
-            padding: 1.4rem 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid #e2edf2;
-        }
-
-        .upload-header h3 {
-            font-weight: 600;
-            color: #1e4a3b;
-            font-size: 1.35rem;
-            margin-bottom: 1rem;
-        }
-
-        .form-upload {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.2rem;
-            align-items: flex-end;
-        }
-
-        .form-group {
-            flex: 1;
-            min-width: 160px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #4b6b5f;
-            margin-bottom: 0.3rem;
-        }
-
-        select, input, .btn {
-            font-family: 'Inter', sans-serif;
-            border-radius: 60px;
-            border: 1px solid #cfdfe8;
-            padding: 0.65rem 1.2rem;
-            font-size: 0.9rem;
-            width: 100%;
-        }
-
-        .btn {
-            background: #1f5e48;
-            border: none;
-            color: white;
-            font-weight: 600;
+            gap: 12px;
+            padding: 12px 16px;
+            margin: 4px 0;
+            border-radius: 14px;
             cursor: pointer;
-            display: inline-flex;
+            transition: all 0.2s;
+            color: rgba(255,255,255,0.85);
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            width: 24px;
+            font-size: 1.1rem;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-item.active {
+            background: #1e8f6e;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Botón para publicar */
+        .publish-btn-sidebar {
+            margin: 20px 16px 30px 16px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 40px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 600;
+            display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            width: auto;
-            padding: 0.65rem 1.8rem;
         }
 
-        .btn:hover {
-            background: #0f4636;
+        .publish-btn-sidebar:hover {
+            background: #1e8f6e;
+            border-color: #1e8f6e;
         }
 
-        .tabs-container {
-            background: white;
-            border-radius: 1.5rem;
-            margin-bottom: 2rem;
-            padding: 0.6rem 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+        /* ========== CONTENIDO PRINCIPAL ========== */
+        .main-content {
+            flex: 1;
+            padding: 24px 32px;
+            overflow-x: auto;
         }
 
-        .tab-btn {
-            background: transparent;
-            border: none;
-            padding: 0.7rem 1.3rem;
-            font-weight: 600;
-            border-radius: 40px;
-            cursor: pointer;
-            color: #2c5a4c;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tab-btn.active {
-            background: #1f5e48;
-            color: white;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 1.8rem;
-            margin-bottom: 2rem;
-        }
-
-        .dashboard-card {
-            background: white;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            border: 1px solid #e9ecef;
-        }
-
-        .card-header {
-            padding: 1rem 1.3rem;
+        .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #edf2f5;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
         }
 
-        .cat-badge {
-            background: #eef3f0;
-            padding: 0.25rem 0.9rem;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #2c6e4f;
+        .page-title h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a2e25;
         }
 
-        .iframe-container iframe {
-            width: 100%;
-            height: 280px;
-            border: none;
+        .page-title p {
+            color: #5f7c6e;
+            font-size: 0.85rem;
         }
 
-        .card-actions {
-            padding: 0.8rem 1.3rem;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #b91c1c;
-            cursor: pointer;
+        .user-info {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 0.4rem 0.8rem;
-            border-radius: 40px;
+            gap: 12px;
+            background: white;
+            padding: 8px 18px;
+            border-radius: 60px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
         }
 
-        .delete-btn:hover {
-            background: #fee2e2;
+        /* Dashboard View */
+        .dashboard-view {
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+            overflow: hidden;
+            min-height: 550px;
+            transition: all 0.2s;
         }
 
-        .empty-message {
-            grid-column: 1 / -1;
+        .dashboard-header {
+            padding: 18px 24px;
+            background: #fafcfb;
+            border-bottom: 1px solid #eef2f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-header h3 {
+            font-weight: 700;
+            color: #1f5e48;
+        }
+
+        .badge-category {
+            background: #e0f0ea;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1f5e48;
+        }
+
+        .iframe-dashboard {
+            width: 100%;
+            height: 550px;
+            border: none;
+            background: #fff;
+        }
+
+        .empty-dashboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
             text-align: center;
-            background: #fef9e6;
-            padding: 3rem;
-            border-radius: 2rem;
-            color: #7b6e3b;
+            color: #8ba396;
         }
 
-        @media (max-width: 720px) {
-            .app-container {
-                padding: 1rem;
+        /* Modal para publicar */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            width: 500px;
+            max-width: 90%;
+            padding: 28px;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+        }
+
+        .modal-content input, .modal-content select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 16px;
+            border: 1px solid #ddd;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            background: #1f5e48;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            border: none;
+            padding: 12px;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
             }
-            .form-upload {
-                flex-direction: column;
+            .sidebar-header h2 span, .nav-item span, .nav-category, .publish-btn-sidebar span {
+                display: none;
             }
-            .btn {
-                width: 100%;
+            .sidebar-header h2 i {
+                margin: 0 auto;
+            }
+            .nav-item {
+                justify-content: center;
+            }
+            .main-content {
+                padding: 16px;
             }
         }
     </style>
 </head>
 <body>
-<div class="app-container">
-    <div class="main-header">
-        <div class="header-titles">
-            <h1><i class="fas fa-seedling"></i> DESARROLLO GENÉTICO Y VIVEROS</h1>
-            <p><i class="fas fa-chart-line"></i> Plataforma central de reportes Power BI</p>
+<div class="app-wrapper">
+    <!-- MENÚ LATERAL -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-seedling"></i><span> DESARROLLO<br>GENÉTICO</span></h2>
+            <p>POWER BI | VIVEROS</p>
         </div>
-        <div class="badge-gerencia">
-            <i class="fas fa-chart-simple"></i> Acceso Gerencia
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar reporte...">
         </div>
-    </div>
-
-    <div class="upload-section">
-        <div class="upload-header">
-            <h3><i class="fas fa-cloud-upload-alt"></i> Publicar nuevo informe Power BI</h3>
+        <div class="nav-menu" id="navMenu">
+            <div class="nav-category">INDICADORES BI</div>
+            <div class="nav-item active" data-category="items"><i class="fas fa-boxes"></i><span>📦 Items / Producción</span></div>
+            <div class="nav-item" data-category="mano_obra"><i class="fas fa-users"></i><span>👥 Mano de Obra</span></div>
+            <div class="nav-item" data-category="sanidad"><i class="fas fa-leaf"></i><span>🛡️ Sanidad Vegetal</span></div>
+            <div class="nav-item" data-category="fertilizaciones"><i class="fas fa-droplet"></i><span>🌱 Fertilizaciones</span></div>
+            <div class="nav-item" data-category="otros"><i class="fas fa-chart-pie"></i><span>📊 Otros KPIs</span></div>
         </div>
-        <div class="form-upload">
-            <div class="form-group">
-                <label>Categoría</label>
-                <select id="categorySelect">
-                    <option value="items">📦 Items / Producción</option>
-                    <option value="mano_obra">👥 Mano de Obra</option>
-                    <option value="sanidad">🛡️ Sanidad</option>
-                    <option value="fertilizaciones">🌱 Fertilizaciones</option>
-                    <option value="otros">📊 Otros</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Nombre del Dashboard</label>
-                <input type="text" id="dashboardName" placeholder="Ej: Control semanal mano de obra">
-            </div>
-            <div class="form-group">
-                <label>URL del informe (Power BI)</label>
-                <input type="text" id="iframeUrl" placeholder="https://app.powerbi.com/view?r=...">
-            </div>
-            <button class="btn" id="publishBtn"><i class="fas fa-plus-circle"></i> Publicar</button>
+        <div class="publish-btn-sidebar" id="openModalBtn">
+            <i class="fas fa-plus-circle"></i><span> Publicar nuevo informe</span>
         </div>
     </div>
 
-    <div class="tabs-container">
-        <button class="tab-btn active" data-category="all">Todos</button>
-        <button class="tab-btn" data-category="items">Items</button>
-        <button class="tab-btn" data-category="mano_obra">Mano de Obra</button>
-        <button class="tab-btn" data-category="sanidad">Sanidad</button>
-        <button class="tab-btn" data-category="fertilizaciones">Fertilizaciones</button>
-        <button class="tab-btn" data-category="otros">Otros</button>
-    </div>
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="page-title">
+                <h1>Dashboard Analítico</h1>
+                <p>Plataforma centralizada de reportes Power BI</p>
+            </div>
+            <div class="user-info">
+                <i class="fas fa-chart-line"></i>
+                <span>Grupo DC | Camposal</span>
+            </div>
+        </div>
 
-    <div id="dashboardGrid" class="dashboard-grid"></div>
+        <div class="dashboard-view" id="dashboardView">
+            <div class="dashboard-header">
+                <h3 id="currentDashboardTitle">Selecciona un reporte del menú lateral</h3>
+                <span class="badge-category" id="currentCategoryBadge">Esperando selección</span>
+            </div>
+            <div id="dashboardFrameContainer" style="min-height: 550px; display: flex; align-items: center; justify-content: center; background: #fafafa;">
+                <div class="empty-dashboard">
+                    <i class="fas fa-chart-simple" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>
+                    <p>Selecciona un dashboard del menú lateral<br>para visualizar los indicadores en tiempo real.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PARA PUBLICAR DASHBOARD -->
+<div id="publishModal" class="modal">
+    <div class="modal-content">
+        <h3><i class="fas fa-cloud-upload-alt"></i> Publicar informe Power BI</h3>
+        <select id="modalCategory">
+            <option value="items">📦 Items / Producción</option>
+            <option value="mano_obra">👥 Mano de Obra</option>
+            <option value="sanidad">🛡️ Sanidad Vegetal</option>
+            <option value="fertilizaciones">🌱 Fertilizaciones</option>
+            <option value="otros">📊 Otros KPIs</option>
+        </select>
+        <input type="text" id="modalName" placeholder="Nombre del dashboard (ej: Control de plagas)">
+        <input type="text" id="modalUrl" placeholder="URL de Power BI (publicar en web)">
+        <div class="modal-buttons">
+            <button class="btn-primary" id="confirmPublishBtn">Publicar</button>
+            <button class="btn-secondary" id="closeModalBtn">Cancelar</button>
+        </div>
+    </div>
 </div>
 
 <script>
     const STORAGE_KEY = "genetica_viveros_dashboards";
     let dashboards = [];
+    let currentCategory = "items";
+    let currentDashboard = null;
 
+    // Cargar datos
     function loadDashboards() {
         const stored = localStorage.getItem(STORAGE_KEY);
         if(stored) {
@@ -299,124 +408,149 @@
         }
         if(!dashboards.length) {
             dashboards = [
-                { id: "1", name: "Inventario de plantas", category: "items", embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiZDU4NzA5MzQtYjE1ZS00OTM4LThmNzAtYmI3YzA5MzllZDQ4IiwidCI6IjI0YzNhYzBiLWI5YzMtNDI5Ni1hZmI4LTljMTkzYzdjMDU5YiIsImMiOjh9", type: "url" },
-                { id: "2", name: "Eficiencia Mano de Obra", category: "mano_obra", embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiYWQyZTU4YmYtMWZkMi00YjdlLWI5M2MtMmE3N2VlODc3YzExIiwidCI6IjI0YzNhYzBiLWI5YzMtNDI5Ni1hZmI4LTljMTkzYzdjMDU5YiIsImMiOjh9", type: "url" }
+                { id: "1", name: "Inventario - Items", category: "items", embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiZDU4NzA5MzQtYjE1ZS00OTM4LThmNzAtYmI3YzA5MzllZDQ4IiwidCI6IjI0YzNhYzBiLWI5YzMtNDI5Ni1hZmI4LTljMTkzYzdjMDU5YiIsImMiOjh9" },
+                { id: "2", name: "Eficiencia Mano de Obra", category: "mano_obra", embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiYWQyZTU4YmYtMWZkMi00YjdlLWI5M2MtMmE3N2VlODc3YzExIiwidCI6IjI0YzNhYzBiLWI5YzMtNDI5Ni1hZmI4LTljMTkzYzdjMDU5YiIsImMiOjh9" },
+                { id: "3", name: "Control Fitosanitario", category: "sanidad", embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiYzM0NjJhYjItYzVjNy00MDNlLWI3YzgtNzRlZjZlY2MyN2QzIiwidCI6IjI0YzNhYzBiLWI5YzMtNDI5Ni1hZmI4LTljMTkzYzdjMDU5YiIsImMiOjh9" }
             ];
             saveDashboards();
         }
-        renderDashboardsByCategory("all");
+        renderMenuAndSelectFirst();
     }
 
     function saveDashboards() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(dashboards));
     }
 
-    function generateId() {
-        return Date.now() + '-' + Math.random().toString(36).substr(2, 6);
+    function renderMenuAndSelectFirst() {
+        const categoryDash = {};
+        dashboards.forEach(d => {
+            if(!categoryDash[d.category]) categoryDash[d.category] = [];
+            categoryDash[d.category].push(d);
+        });
+        // Seleccionar el primer dashboard de la categoría activa por defecto (items)
+        const firstDashboard = dashboards.find(d => d.category === "items");
+        if(firstDashboard) {
+            selectDashboard(firstDashboard);
+        } else if(dashboards.length){
+            selectDashboard(dashboards[0]);
+        } else {
+            clearDashboardView();
+        }
     }
 
-    function publishDashboard() {
-        const category = document.getElementById("categorySelect").value;
-        let name = document.getElementById("dashboardName").value.trim();
-        const iframeUrl = document.getElementById("iframeUrl").value.trim();
-
-        if (!name) {
-            name = `Informe ${new Date().toLocaleString()}`;
+    function selectDashboard(dashboard) {
+        currentDashboard = dashboard;
+        currentCategory = dashboard.category;
+        document.getElementById("currentDashboardTitle").innerText = dashboard.name;
+        let catLabel = "";
+        switch(dashboard.category){
+            case "items": catLabel = "📦 Items / Producción"; break;
+            case "mano_obra": catLabel = "👥 Mano de Obra"; break;
+            case "sanidad": catLabel = "🛡️ Sanidad Vegetal"; break;
+            case "fertilizaciones": catLabel = "🌱 Fertilizaciones"; break;
+            case "otros": catLabel = "📊 Otros KPIs"; break;
         }
+        document.getElementById("currentCategoryBadge").innerText = catLabel;
+        const container = document.getElementById("dashboardFrameContainer");
+        container.innerHTML = `<iframe class="iframe-dashboard" src="${dashboard.embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+        highlightActiveCategoryInMenu(dashboard.category);
+    }
 
-        if (!iframeUrl) {
-            alert("Por favor ingresa una URL de Power BI");
+    function clearDashboardView() {
+        document.getElementById("currentDashboardTitle").innerText = "Sin reportes disponibles";
+        const container = document.getElementById("dashboardFrameContainer");
+        container.innerHTML = `<div class="empty-dashboard"><i class="fas fa-chart-simple"></i><p>Publica un nuevo informe desde el botón inferior.</p></div>`;
+    }
+
+    function highlightActiveCategoryInMenu(category) {
+        document.querySelectorAll(".nav-item").forEach(item => {
+            item.classList.remove("active");
+            if(item.getAttribute("data-category") === category) {
+                item.classList.add("active");
+            }
+        });
+    }
+
+    function filterDashboardsByCategory(category) {
+        const filtered = dashboards.filter(d => d.category === category);
+        if(filtered.length > 0) {
+            selectDashboard(filtered[0]);
+        } else {
+            clearDashboardView();
+            currentCategory = category;
+            highlightActiveCategoryInMenu(category);
+            document.getElementById("currentDashboardTitle").innerText = "Sin informes en esta categoría";
+            document.getElementById("currentCategoryBadge").innerText = "Publica uno nuevo";
+            const container = document.getElementById("dashboardFrameContainer");
+            container.innerHTML = `<div class="empty-dashboard"><i class="fas fa-chart-line"></i><p>No hay dashboards en ${category}. Usa "Publicar nuevo informe".</p></div>`;
+        }
+    }
+
+    // Publicar nuevo dashboard
+    function publishDashboard() {
+        const category = document.getElementById("modalCategory").value;
+        const name = document.getElementById("modalName").value.trim();
+        const url = document.getElementById("modalUrl").value.trim();
+        if(!name) {
+            alert("Escribe un nombre para el dashboard");
             return;
         }
-
-        const newDashboard = {
-            id: generateId(),
+        if(!url) {
+            alert("Ingresa la URL de Power BI (publicar en web)");
+            return;
+        }
+        const newDash = {
+            id: Date.now() + "",
             name: name,
             category: category,
-            embedUrl: iframeUrl,
-            type: "url"
+            embedUrl: url
         };
-
-        dashboards.push(newDashboard);
+        dashboards.push(newDash);
         saveDashboards();
-        
-        document.getElementById("dashboardName").value = "";
-        document.getElementById("iframeUrl").value = "";
-        
-        const activeTab = document.querySelector(".tab-btn.active")?.getAttribute("data-category") || "all";
-        renderDashboardsByCategory(activeTab);
+        document.getElementById("modalName").value = "";
+        document.getElementById("modalUrl").value = "";
+        closeModal();
+        filterDashboardsByCategory(category);
     }
 
-    function deleteDashboard(id) {
-        if(confirm("¿Eliminar este informe?")) {
-            dashboards = dashboards.filter(d => d.id !== id);
-            saveDashboards();
-            const activeTab = document.querySelector(".tab-btn.active")?.getAttribute("data-category") || "all";
-            renderDashboardsByCategory(activeTab);
-        }
-    }
-
-    function renderDashboardsByCategory(categoryFilter) {
-        const grid = document.getElementById("dashboardGrid");
-        let filtered = categoryFilter === "all" ? [...dashboards] : dashboards.filter(d => d.category === categoryFilter);
-
-        if(filtered.length === 0) {
-            grid.innerHTML = `<div class="empty-message">
-                                <p>No hay dashboards publicados en esta categoría.</p>
-                              </div>`;
-            return;
-        }
-
-        grid.innerHTML = "";
-        filtered.forEach(dash => {
-            const card = document.createElement("div");
-            card.className = "dashboard-card";
-            
-            let categoryLabel = "";
-            switch(dash.category) {
-                case "items": categoryLabel = "📦 Items / Producción"; break;
-                case "mano_obra": categoryLabel = "👥 Mano de Obra"; break;
-                case "sanidad": categoryLabel = "🛡️ Sanidad"; break;
-                case "fertilizaciones": categoryLabel = "🌱 Fertilizaciones"; break;
-                case "otros": categoryLabel = "📈 Otros"; break;
-                default: categoryLabel = dash.category;
+    // Búsqueda en tiempo real
+    function setupSearch() {
+        const searchInput = document.getElementById("searchInput");
+        searchInput.addEventListener("input", (e) => {
+            const term = e.target.value.toLowerCase();
+            if(!term) {
+                if(currentDashboard) selectDashboard(currentDashboard);
+                else filterDashboardsByCategory("items");
+                return;
             }
-            
-            card.innerHTML = `
-                <div class="card-header">
-                    <span class="cat-badge">${categoryLabel}</span>
-                    <span class="card-title">${dash.name}</span>
-                </div>
-                <div class="iframe-container">
-                    <iframe src="${dash.embedUrl}" title="${dash.name}" allowfullscreen></iframe>
-                </div>
-                <div class="card-actions">
-                    <button class="delete-btn" data-id="${dash.id}"><i class="fas fa-trash-alt"></i> Eliminar</button>
-                </div>
-            `;
-            
-            grid.appendChild(card);
-            
-            const delBtn = card.querySelector(".delete-btn");
-            delBtn.addEventListener("click", () => deleteDashboard(dash.id));
+            const found = dashboards.find(d => d.name.toLowerCase().includes(term));
+            if(found) {
+                selectDashboard(found);
+            } else {
+                clearDashboardView();
+            }
         });
     }
 
-    function setupTabs() {
-        const tabs = document.querySelectorAll(".tab-btn");
-        tabs.forEach(btn => {
-            btn.addEventListener("click", () => {
-                const category = btn.getAttribute("data-category");
-                tabs.forEach(b => b.classList.remove("active"));
-                btn.classList.add("active");
-                renderDashboardsByCategory(category);
-            });
-        });
-    }
+    // Modal handlers
+    const modal = document.getElementById("publishModal");
+    function openModal() { modal.style.display = "flex"; }
+    function closeModal() { modal.style.display = "none"; }
 
-    document.getElementById("publishBtn").addEventListener("click", publishDashboard);
+    // Event listeners
+    document.querySelectorAll(".nav-item").forEach(item => {
+        item.addEventListener("click", () => {
+            const cat = item.getAttribute("data-category");
+            filterDashboardsByCategory(cat);
+        });
+    });
+    document.getElementById("openModalBtn").addEventListener("click", openModal);
+    document.getElementById("closeModalBtn").addEventListener("click", closeModal);
+    document.getElementById("confirmPublishBtn").addEventListener("click", publishDashboard);
+    window.onclick = (e) => { if(e.target === modal) closeModal(); };
+
     loadDashboards();
-    setupTabs();
+    setupSearch();
 </script>
 </body>
 </html>
